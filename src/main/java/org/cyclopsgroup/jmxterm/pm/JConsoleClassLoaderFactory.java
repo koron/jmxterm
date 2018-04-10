@@ -1,5 +1,6 @@
 package org.cyclopsgroup.jmxterm.pm;
 
+import org.apache.commons.lang3.JavaVersion;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.File;
@@ -21,6 +22,9 @@ public class JConsoleClassLoaderFactory {
    * @return ClassLoader that understands tools.jar and jconsole.jar
    */
   public static ClassLoader getClassLoader() {
+    if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9)) {
+      return ClassLoader.getSystemClassLoader();
+    }
     File javaHome = new File(SystemUtils.JAVA_HOME).getAbsoluteFile().getParentFile();
     final File toolsJar, jconsoleJar;
     if (isBeforeJava7() && isMacOs()) {
